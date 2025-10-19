@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { medicines } from "@/data/mockData";
 import { toast } from "sonner";
+import pharmacyBg from "@/assets/pharmacy-bg.jpg";
 
 const MedBay = () => {
   const location = useLocation();
@@ -46,11 +47,18 @@ const MedBay = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 space-y-8">
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold text-primary">Med Bay</h1>
-          <p className="text-muted-foreground">Find medicines and compare prices</p>
+      <div className="relative h-[300px] mb-8 overflow-hidden">
+        <img 
+          src={pharmacyBg} 
+          alt="Pharmacy" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/60 flex flex-col items-center justify-center text-white">
+          <h1 className="text-5xl font-bold">Med Bay</h1>
+          <p className="text-xl mt-2">Find medicines and compare prices</p>
         </div>
+      </div>
+      <div className="container mx-auto px-4 py-8 space-y-8">
 
         {/* Search Bar */}
         <Card>

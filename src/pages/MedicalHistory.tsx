@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { samplePrescriptions, medicines } from "@/data/mockData";
 import { toast } from "sonner";
+import medicalRecordsBg from "@/assets/medical-records-bg.jpg";
 
 const MedicalHistory = () => {
   const navigate = useNavigate();
@@ -34,11 +35,18 @@ const MedicalHistory = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 space-y-8">
-        <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold text-primary">Medical History</h1>
-          <p className="text-muted-foreground">Your E-Prescriptions and past visits</p>
+      <div className="relative h-[300px] mb-8 overflow-hidden">
+        <img 
+          src={medicalRecordsBg} 
+          alt="Medical Records" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/60 flex flex-col items-center justify-center text-white">
+          <h1 className="text-5xl font-bold">Medical History</h1>
+          <p className="text-xl mt-2">Your E-Prescriptions and past visits</p>
         </div>
+      </div>
+      <div className="container mx-auto px-4 py-8 space-y-8">
 
         {samplePrescriptions.length === 0 ? (
           <Card>
@@ -108,16 +116,8 @@ const MedicalHistory = () => {
                                       {medicineInfo ? (
                                         <>
                                           <div>
-                                            <h4 className="font-semibold text-foreground mb-1">Uses</h4>
-                                            <p>{medicineInfo.uses}</p>
-                                          </div>
-                                          <div>
-                                            <h4 className="font-semibold text-foreground mb-1">Side Effects</h4>
-                                            <p>{medicineInfo.sideEffects}</p>
-                                          </div>
-                                          <div>
-                                            <h4 className="font-semibold text-foreground mb-1">Type</h4>
-                                            <p>{medicineInfo.type}</p>
+                                            <h4 className="font-semibold text-foreground mb-2">What is this medicine used for?</h4>
+                                            <p className="text-base">{medicineInfo.uses}</p>
                                           </div>
                                         </>
                                       ) : (
@@ -127,7 +127,7 @@ const MedicalHistory = () => {
                                           </p>
                                         </div>
                                       )}
-                                      <p className="text-xs text-warning">
+                                      <p className="text-xs text-warning mt-4">
                                         ⚠️ This information is for reference only. Always consult your doctor or pharmacist.
                                       </p>
                                     </DialogDescription>

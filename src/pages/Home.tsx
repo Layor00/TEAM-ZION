@@ -43,7 +43,7 @@ const Home = () => {
         <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
           <Heart className="w-16 h-16 mb-4 text-white fill-white animate-pulse" />
           <h1 className="text-5xl font-bold drop-shadow-lg">Hello Doctor</h1>
-          <p className="text-lg mt-2 drop-shadow-lg">Your Smart Healthcare Companion</p>
+          <p className="text-xl mt-2 font-medium drop-shadow-lg">"Check in before you Check up"</p>
         </div>
       </div>
 

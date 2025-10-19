@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { doctors, hospitals } from "@/data/mockData";
 import { toast } from "sonner";
+import doctorProfileBg from "@/assets/doctor-profile.jpg";
 
 const DoctorDetail = () => {
   const { id } = useParams();
@@ -83,6 +84,16 @@ const DoctorDetail = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <div className="relative h-[300px] mb-8 overflow-hidden">
+        <img 
+          src={doctorProfileBg} 
+          alt="Doctor" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/60 flex items-center justify-center">
+          <h1 className="text-5xl font-bold text-white">Doctor Profile</h1>
+        </div>
+      </div>
       <div className="container mx-auto px-4 py-8 space-y-8">
         <Button variant="ghost" onClick={() => navigate(-1)}>
           <ArrowLeft className="w-4 h-4 mr-2" />

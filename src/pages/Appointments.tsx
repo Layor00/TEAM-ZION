@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import type { Appointment } from "@/data/mockData";
 import { hospitals } from "@/data/mockData";
+import appointmentsBg from "@/assets/appointments-bg.jpg";
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
@@ -39,8 +40,17 @@ const Appointments = () => {
   if (appointments.length === 0) {
     return (
       <div className="min-h-screen bg-background">
+        <div className="relative h-[300px] mb-8 overflow-hidden">
+          <img 
+            src={appointmentsBg} 
+            alt="Appointments" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/60 flex flex-col items-center justify-center text-white">
+            <h1 className="text-5xl font-bold">My Appointments</h1>
+          </div>
+        </div>
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold text-primary mb-8">My Appointments</h1>
           <Card>
             <CardContent className="flex flex-col items-center justify-center py-16 space-y-4">
               <Calendar className="w-20 h-20 text-muted-foreground" />
@@ -55,8 +65,17 @@ const Appointments = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <div className="relative h-[300px] mb-8 overflow-hidden">
+        <img 
+          src={appointmentsBg} 
+          alt="Appointments" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary/60 flex flex-col items-center justify-center text-white">
+          <h1 className="text-5xl font-bold">My Appointments</h1>
+        </div>
+      </div>
       <div className="container mx-auto px-4 py-8 space-y-8">
-        <h1 className="text-3xl font-bold text-primary">My Appointments</h1>
 
         <div className="grid md:grid-cols-2 gap-6">
           {appointments.map((appointment) => (
