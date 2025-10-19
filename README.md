@@ -58,3 +58,7 @@ and here you can see the report they give and e-prescription.
 and beside each med, there is small i in circle symbol, and if you click it, you get basic overview of med and with note its not 100 accurate. at if you click on a medicine name, if asks whether you want to check where it is available, if you click yes, it redirects to page 3 and show what what stores it is available in.
 and to this prescription, doc's nurse has a access and she can add the details of when to take.
 and here we show a bell symbol and asks if you want to create a alarm
+
+# NOTE
+home page will have a tool bar of 3 lines at top right
+there you can see your profile and change your language (but prescription language does not change)
