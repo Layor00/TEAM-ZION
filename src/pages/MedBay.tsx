@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Search, MapPin, IndianRupee, Package, ScanLine } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,8 +9,23 @@ import { medicines } from "@/data/mockData";
 import { toast } from "sonner";
 
 const MedBay = () => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const location = useLocation();
+  const initialSearch = (location.state as { searchQuery?: string })?.searchQuery || "";
+  
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedMedicine, setSelectedMedicine] = useState(medicines[0]);
+  
+  useEffect(() => {
+    if (initialSearch) {
+      // Auto-select medicine if it matches the search
+      const matchedMedicine = medicines.find(m => 
+        m.name.toLowerCase().includes(initialSearch.toLowerCase())
+      );
+      if (matchedMedicine) {
+        setSelectedMedicine(matchedMedicine);
+      }
+    }
+  }, [initialSearch]);
 
   const filteredMedicines = medicines.filter((m) =>
     m.name.toLowerCase().includes(searchQuery.toLowerCase())
