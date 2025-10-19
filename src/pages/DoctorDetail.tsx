@@ -1,8 +1,19 @@
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Star, Clock, IndianRupee, Users, MapPin, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { doctors, hospitals } from "@/data/mockData";
 import { toast } from "sonner";
 
@@ -11,14 +22,32 @@ const DoctorDetail = () => {
   const navigate = useNavigate();
   const doctor = doctors.find((d) => d.id === id);
   const hospital = hospitals.find((h) => h.id === doctor?.hospitalId);
+  
+  const [isBookingDialogOpen, setIsBookingDialogOpen] = useState(false);
+  const [patientName, setPatientName] = useState("");
+  const [patientAge, setPatientAge] = useState("");
 
   if (!doctor) {
     return <div className="p-8 text-center">Doctor not found</div>;
   }
 
-  const handleBookAppointment = () => {
+  const handleOpenBookingDialog = () => {
     if (!doctor.isAvailable) {
       toast.error("Doctor is not available for appointments");
+      return;
+    }
+    setIsBookingDialogOpen(true);
+  };
+
+  const handleConfirmBooking = () => {
+    if (!patientName.trim() || !patientAge.trim()) {
+      toast.error("Please enter patient name and age");
+      return;
+    }
+
+    const age = parseInt(patientAge);
+    if (isNaN(age) || age < 0 || age > 120) {
+      toast.error("Please enter a valid age");
       return;
     }
 
@@ -38,11 +67,16 @@ const DoctorDetail = () => {
       token,
       fee: doctor.consultationFee + 20,
       status: "upcoming",
+      patientName: patientName.trim(),
+      patientAge: age,
     };
 
     appointments.push(newAppointment);
     localStorage.setItem("appointments", JSON.stringify(appointments));
     
+    setIsBookingDialogOpen(false);
+    setPatientName("");
+    setPatientAge("");
     toast.success("Appointment booked successfully!");
     navigate("/appointments");
   };
@@ -192,7 +226,7 @@ const DoctorDetail = () => {
                 <Button
                   className="w-full"
                   size="lg"
-                  onClick={handleBookAppointment}
+                  onClick={handleOpenBookingDialog}
                   disabled={!doctor.isAvailable}
                 >
                   {doctor.isAvailable ? "Book Now" : "Not Available"}
@@ -206,6 +240,47 @@ const DoctorDetail = () => {
           </div>
         </div>
       </div>
+
+      {/* Booking Dialog */}
+      <Dialog open={isBookingDialogOpen} onOpenChange={setIsBookingDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Patient Information</DialogTitle>
+            <DialogDescription>
+              Please provide patient details to complete the booking
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="patient-name">Patient Name</Label>
+              <Input
+                id="patient-name"
+                placeholder="Enter full name"
+                value={patientName}
+                onChange={(e) => setPatientName(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="patient-age">Age</Label>
+              <Input
+                id="patient-age"
+                type="number"
+                placeholder="Enter age"
+                value={patientAge}
+                onChange={(e) => setPatientAge(e.target.value)}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsBookingDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleConfirmBooking}>
+              Confirm Booking
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

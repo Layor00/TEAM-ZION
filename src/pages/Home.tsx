@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { hospitals, doctors } from "@/data/mockData";
+import hospitalHero from "@/assets/hospital-hero.jpg";
 
 const Home = () => {
   const [selectedHospital, setSelectedHospital] = useState(hospitals[0].id);
@@ -34,14 +35,21 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <div 
+        className="relative h-64 bg-cover bg-center bg-no-repeat mb-8"
+        style={{ backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.5)), url(${hospitalHero})` }}
+      >
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+          <Heart className="w-16 h-16 mb-4 text-white fill-white animate-pulse" />
+          <h1 className="text-5xl font-bold drop-shadow-lg">Hello Doctor</h1>
+          <p className="text-lg mt-2 drop-shadow-lg">Your Smart Healthcare Companion</p>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 py-8 space-y-8">
         {/* Header with Menu */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Heart className="w-8 h-8 text-destructive fill-destructive animate-pulse" />
-            <h1 className="text-3xl font-bold text-primary">Hello Doctor</h1>
-          </div>
-          
+        <div className="flex items-center justify-end">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline" size="icon">

@@ -1,17 +1,9 @@
 import { useState } from "react";
-import { Search, MapPin, IndianRupee, Info, Package, ScanLine } from "lucide-react";
+import { Search, MapPin, IndianRupee, Package, ScanLine } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { medicines } from "@/data/mockData";
 import { toast } from "sonner";
 
@@ -81,119 +73,77 @@ const MedBay = () => {
           ))}
         </div>
 
-        {/* Medicine Details */}
-        <div className="grid lg:grid-cols-3 gap-6">
-          <Card className="lg:col-span-2">
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div>
-                  <CardTitle className="text-2xl">{selectedMedicine.name}</CardTitle>
-                  <p className="text-muted-foreground mt-1">{selectedMedicine.type}</p>
-                </div>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <Info className="w-4 h-4 mr-2" />
-                      Medicine Info
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>{selectedMedicine.name}</DialogTitle>
-                      <DialogDescription className="space-y-3 pt-4">
-                        <div>
-                          <h4 className="font-semibold text-foreground mb-1">Uses</h4>
-                          <p>{selectedMedicine.uses}</p>
-                        </div>
-                        <div>
-                          <h4 className="font-semibold text-foreground mb-1">Side Effects</h4>
-                          <p>{selectedMedicine.sideEffects}</p>
-                        </div>
-                        <p className="text-xs text-warning">
-                          ⚠ This information is for reference only. Always consult your doctor.
-                        </p>
-                      </DialogDescription>
-                    </DialogHeader>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="p-4 bg-secondary rounded-lg space-y-2">
-                <h3 className="font-semibold text-foreground">Uses</h3>
-                <p className="text-sm text-muted-foreground">{selectedMedicine.uses}</p>
-              </div>
-              <div className="p-4 bg-warning/10 rounded-lg border border-warning space-y-2">
-                <h3 className="font-semibold text-foreground">Side Effects</h3>
-                <p className="text-sm text-muted-foreground">{selectedMedicine.sideEffects}</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-foreground">Available at</h3>
-            {selectedMedicine.pharmacies.map((pharmacy) => (
-              <Card key={pharmacy.id}>
-                <CardContent className="p-4 space-y-3">
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                      <h4 className="font-semibold text-foreground">{pharmacy.name}</h4>
-                      <p className="text-xs text-muted-foreground">{pharmacy.address}</p>
-                      <div className="flex items-center gap-2 text-xs text-primary">
-                        <MapPin className="w-3 h-3" />
-                        <span>{pharmacy.distance} km away</span>
-                      </div>
+        {/* Pharmacy Availability */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{selectedMedicine.name}</CardTitle>
+            <p className="text-sm text-muted-foreground">{selectedMedicine.type}</p>
+          </CardHeader>
+        </Card>
+        
+        <div className="space-y-4">
+          <h3 className="text-xl font-bold text-foreground">Available at</h3>
+          {selectedMedicine.pharmacies.map((pharmacy) => (
+            <Card key={pharmacy.id}>
+              <CardContent className="p-4 space-y-3">
+                <div className="flex items-start justify-between">
+                  <div className="space-y-1">
+                    <h4 className="font-semibold text-foreground">{pharmacy.name}</h4>
+                    <p className="text-xs text-muted-foreground">{pharmacy.address}</p>
+                    <div className="flex items-center gap-2 text-xs text-primary">
+                      <MapPin className="w-3 h-3" />
+                      <span>{pharmacy.distance} km away</span>
                     </div>
-                    <Badge
-                      variant={pharmacy.inStock ? "default" : "secondary"}
-                      className={pharmacy.inStock ? "bg-success hover:bg-success/90" : ""}
-                    >
-                      {pharmacy.inStock ? "In Stock" : "Out of Stock"}
-                    </Badge>
                   </div>
+                  <Badge
+                    variant={pharmacy.inStock ? "default" : "secondary"}
+                    className={pharmacy.inStock ? "bg-success hover:bg-success/90" : ""}
+                  >
+                    {pharmacy.inStock ? "In Stock" : "Out of Stock"}
+                  </Badge>
+                </div>
 
-                  <div className="flex items-center gap-2 text-xl font-bold text-primary">
-                    <IndianRupee className="w-5 h-5" />
-                    <span>{pharmacy.price}</span>
-                  </div>
+                <div className="flex items-center gap-2 text-xl font-bold text-primary">
+                  <IndianRupee className="w-5 h-5" />
+                  <span>{pharmacy.price}</span>
+                </div>
 
-                  <div className="space-y-2">
-                    <Button
-                      className="w-full"
-                      size="sm"
-                      disabled={!pharmacy.inStock}
-                      onClick={() => handleOrderMedicine(pharmacy.name, pharmacy.price, false)}
-                    >
-                      Pick Up from Store
-                    </Button>
-                    <Button
-                      className="w-full"
-                      variant="outline"
-                      size="sm"
-                      disabled={!pharmacy.inStock}
-                      onClick={() => handleOrderMedicine(pharmacy.name, pharmacy.price, true)}
-                    >
-                      Home Delivery (+₹30)
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full"
-                      onClick={() => {
-                        window.open(
-                          `https://www.google.com/maps/search/?api=1&query=${pharmacy.address}`,
-                          "_blank"
-                        );
-                      }}
-                    >
-                      <MapPin className="w-4 h-4 mr-2" />
-                      Get Directions
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                <div className="space-y-2">
+                  <Button
+                    className="w-full"
+                    size="sm"
+                    disabled={!pharmacy.inStock}
+                    onClick={() => handleOrderMedicine(pharmacy.name, pharmacy.price, false)}
+                  >
+                    Pick Up from Store
+                  </Button>
+                  <Button
+                    className="w-full"
+                    variant="outline"
+                    size="sm"
+                    disabled={!pharmacy.inStock}
+                    onClick={() => handleOrderMedicine(pharmacy.name, pharmacy.price, true)}
+                  >
+                    Home Delivery (+₹30)
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full"
+                    onClick={() => {
+                      window.open(
+                        `https://www.google.com/maps/search/?api=1&query=${pharmacy.address}`,
+                        "_blank"
+                      );
+                    }}
+                  >
+                    <MapPin className="w-4 h-4 mr-2" />
+                    Get Directions
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </div>
